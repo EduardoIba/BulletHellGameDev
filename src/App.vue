@@ -1,14 +1,14 @@
 <template>
-  <GameCanvas />
+  <SchoolPocalypse />
 </template>
 
 <script>
-import GameCanvas from './components/GameCanvas.vue';
+import SchoolPocalypse from './components/SchoolPocalypse.vue';
 
 export default {
   name: 'App',
   components: {
-    GameCanvas
+    SchoolPocalypse
   }
 };
 </script>
