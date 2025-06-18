@@ -286,10 +286,12 @@ export default {
         colisao2: null,
         colisao3: null,
         colisao4: null,
+        colisao5: null,
       },
       faseColisaoMap: {
         1: "colisao3",
         2: "colisao1",
+        3: "colisao5",
         4: "colisao4",
         5: "colisao2",
       },
@@ -382,7 +384,7 @@ export default {
           console.error("Erro ao carregar a imagem do boss_sleeping:", e);
 
         this.bgMusic = new Audio(
-          new URL("../assets/audio/background_music.mp3", import.meta.url).href
+          new URL("../assets/audio/music.mp3", import.meta.url).href
         );
         this.bgMusic.loop = true;
         this.bgMusic.volume = this.volumeMusica / 100;
