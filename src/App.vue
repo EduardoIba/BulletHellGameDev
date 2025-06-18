@@ -3,13 +3,13 @@
 </template>
 
 <script>
-import GameCanvas from './components/GameCanvas.vue';
+import GameCanvas from "./index.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    GameCanvas
-  }
+    GameCanvas,
+  },
 };
 </script>
 

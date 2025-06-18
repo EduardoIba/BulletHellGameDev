@@ -131,29 +131,29 @@
 </template>
 
 <script>
-import { useState } from "../useState.js";
-import Menu from "./mainMenu.vue";
-import SideMenu from "./sideMenu.vue";
-import WinScreen from "./winScreen.vue";
-import GameOverScreen from "./gameOverScreen.vue";
-import Prologue from "./prologue.vue";
-import Credits from "./creditsScreen.vue";
-import GameHUD from "./gameHUD.vue";
-import CutScenes from "./cutScenes.vue";
-import OptionsScreen from "./optionsScreen.vue";
-import { carregarSprites } from "../utils/carregarSprites.js";
-import { carregarFundos } from "../utils/carregarFundos.js";
-import { drawImage } from "../utils/drawImage.js";
+import { useState } from "./useState.js";
+import Menu from "./components/mainMenu.vue";
+import SideMenu from "./components/sideMenu.vue";
+import WinScreen from "./components/winScreen.vue";
+import GameOverScreen from "./components/gameOverScreen.vue";
+import Prologue from "./components/prologue.vue";
+import Credits from "./components/creditsScreen.vue";
+import GameHUD from "./components/gameHUD.vue";
+import CutScenes from "./components/cutScenes.vue";
+import OptionsScreen from "./components/optionsScreen.vue";
+import { carregarSprites } from "./utils/carregarSprites.js";
+import { carregarFundos } from "./utils/carregarFundos.js";
+import { drawImage } from "./utils/drawImage.js";
 import {
   verificarColisaoDePixel,
   verificarColisaoDeProjetilComPlayer,
-} from "../utils/colisao.js";
-import { gerarInimigosPorFase } from "../utils/gerarInimigosPorFase.js";
-import { gerarBoss } from "../utils/gerarBoss.js";
-import { atirarProjeteis } from "../utils/atirarProjeteis.js";
-import { avancarVideoCutscenes } from "../utils/avancarCutscenes.js";
-import { pularCutscenesVideos } from "../utils/pularCutscenes.js";
-import { iniciarCutsceneVideos } from "../utils/iniciarCutscene.js";
+} from "./utils/colisao.js";
+import { gerarInimigosPorFase } from "./utils/gerarInimigosPorFase.js";
+import { gerarBoss } from "./utils/gerarBoss.js";
+import { atirarProjeteis } from "./utils/atirarProjeteis.js";
+import { avancarVideoCutscenes } from "./utils/avancarCutscenes.js";
+import { pularCutscenesVideos } from "./utils/pularCutscenes.js";
+import { iniciarCutsceneVideos } from "./utils/iniciarCutscene.js";
 
 const {
   avancarVideoCutscenefase,
@@ -224,22 +224,22 @@ export default {
       currentCutsceneFaseIndex: 0,
       nextFaseAfterCutscene: 0,
       videosDeTransicao: [
-        new URL("../assets/videos/video11.mp4", import.meta.url).href,
-        new URL("../assets/videos/video12.mp4", import.meta.url).href,
-        new URL("../assets/videos/video13.mp4", import.meta.url).href,
-        new URL("../assets/videos/video14.mp4", import.meta.url).href,
-        new URL("../assets/videos/video19.mp4", import.meta.url).href,
-        new URL("../assets/videos/video20.mp4", import.meta.url).href,
-        new URL("../assets/videos/video21.mp4", import.meta.url).href,
-        new URL("../assets/videos/video22.mp4", import.meta.url).href,
-        new URL("../assets/videos/video23.mp4", import.meta.url).href,
-        new URL("../assets/videos/video24.mp4", import.meta.url).href,
-        new URL("../assets/videos/video25.mp4", import.meta.url).href,
-        new URL("../assets/videos/video26.mp4", import.meta.url).href,
-        new URL("../assets/videos/video27.mp4", import.meta.url).href,
-        new URL("../assets/videos/video28.mp4", import.meta.url).href,
-        new URL("../assets/videos/video29.mp4", import.meta.url).href,
-        new URL("../assets/videos/video30.mp4", import.meta.url).href,
+        new URL("./assets/videos/video11.mp4", import.meta.url).href,
+        new URL("./assets/videos/video12.mp4", import.meta.url).href,
+        new URL("./assets/videos/video13.mp4", import.meta.url).href,
+        new URL("./assets/videos/video14.mp4", import.meta.url).href,
+        new URL("./assets/videos/video19.mp4", import.meta.url).href,
+        new URL("./assets/videos/video20.mp4", import.meta.url).href,
+        new URL("./assets/videos/video21.mp4", import.meta.url).href,
+        new URL("./assets/videos/video22.mp4", import.meta.url).href,
+        new URL("./assets/videos/video23.mp4", import.meta.url).href,
+        new URL("./assets/videos/video24.mp4", import.meta.url).href,
+        new URL("./assets/videos/video25.mp4", import.meta.url).href,
+        new URL("./assets/videos/video26.mp4", import.meta.url).href,
+        new URL("./assets/videos/video27.mp4", import.meta.url).href,
+        new URL("./assets/videos/video28.mp4", import.meta.url).href,
+        new URL("./assets/videos/video29.mp4", import.meta.url).href,
+        new URL("./assets/videos/video30.mp4", import.meta.url).href,
       ],
       cutsceneFaseMap: {
         2: { startIndex: 0, endIndex: 3 },
@@ -249,32 +249,32 @@ export default {
       cutscenesFaseJaVistas: { 2: false, 3: false, 4: false, 5: false },
       currentCutsceneFase3Index: 0,
       videosFase3: [
-        new URL("../assets/videos/video15.mp4", import.meta.url).href,
-        new URL("../assets/videos/video16.mp4", import.meta.url).href,
-        new URL("../assets/videos/video17.mp4", import.meta.url).href,
-        new URL("../assets/videos/video18.mp4", import.meta.url).href,
+        new URL("./assets/videos/video15.mp4", import.meta.url).href,
+        new URL("./assets/videos/video16.mp4", import.meta.url).href,
+        new URL("./assets/videos/video17.mp4", import.meta.url).href,
+        new URL("./assets/videos/video18.mp4", import.meta.url).href,
       ],
       cutsceneFase3JaVista: false,
-      videoMorte: new URL("../assets/videos/videomorte.mp4", import.meta.url)
+      videoMorte: new URL("./assets/videos/videomorte.mp4", import.meta.url)
         .href,
       videoFundoFase5: new URL(
-        "../assets/videos/fundo_fase5.mp4",
+        "./assets/videos/fundo_fase5.mp4",
         import.meta.url
       ).href,
       volumeMusica: 5,
       inGameMenuOpen: false,
       bgMusic: null,
       videosHistorinha: [
-        new URL("../assets/videos/video1.mp4", import.meta.url).href,
-        new URL("../assets/videos/video2.mp4", import.meta.url).href,
-        new URL("../assets/videos/video3.mp4", import.meta.url).href,
-        new URL("../assets/videos/video4.mp4", import.meta.url).href,
-        new URL("../assets/videos/video5.mp4", import.meta.url).href,
-        new URL("../assets/videos/video6.mp4", import.meta.url).href,
-        new URL("../assets/videos/video7.mp4", import.meta.url).href,
-        new URL("../assets/videos/video8.mp4", import.meta.url).href,
-        new URL("../assets/videos/video9.mp4", import.meta.url).href,
-        new URL("../assets/videos/video10.mp4", import.meta.url).href,
+        new URL("./assets/videos/video1.mp4", import.meta.url).href,
+        new URL("./assets/videos/video2.mp4", import.meta.url).href,
+        new URL("./assets/videos/video3.mp4", import.meta.url).href,
+        new URL("./assets/videos/video4.mp4", import.meta.url).href,
+        new URL("./assets/videos/video5.mp4", import.meta.url).href,
+        new URL("./assets/videos/video6.mp4", import.meta.url).href,
+        new URL("./assets/videos/video7.mp4", import.meta.url).href,
+        new URL("./assets/videos/video8.mp4", import.meta.url).href,
+        new URL("./assets/videos/video9.mp4", import.meta.url).href,
+        new URL("./assets/videos/video10.mp4", import.meta.url).href,
       ],
       countdownValue: 3,
       countdownIntervalId: null,
@@ -302,13 +302,13 @@ export default {
       tempoFinal: 0,
       currentCutsceneFinalIndex: 0,
       videosFinais: [
-        new URL("../assets/videos/video31.mp4", import.meta.url).href,
-        new URL("../assets/videos/video32.mp4", import.meta.url).href,
-        new URL("../assets/videos/video33.mp4", import.meta.url).href,
-        new URL("../assets/videos/video34.mp4", import.meta.url).href,
-        new URL("../assets/videos/video35.mp4", import.meta.url).href,
-        new URL("../assets/videos/video36.mp4", import.meta.url).href,
-        new URL("../assets/videos/video37.mp4", import.meta.url).href,
+        new URL("./assets/videos/video31.mp4", import.meta.url).href,
+        new URL("./assets/videos/video32.mp4", import.meta.url).href,
+        new URL("./assets/videos/video33.mp4", import.meta.url).href,
+        new URL("./assets/videos/video34.mp4", import.meta.url).href,
+        new URL("./assets/videos/video35.mp4", import.meta.url).href,
+        new URL("./assets/videos/video36.mp4", import.meta.url).href,
+        new URL("./assets/videos/video37.mp4", import.meta.url).href,
       ],
       tempoTotalDeJogo: 0,
       tempoTotalInterval: null,
@@ -335,7 +335,7 @@ export default {
         if (Object.hasOwnProperty.call(this.colisaoImages, key)) {
           const img = new Image();
           img.src = new URL(
-            `../assets/background/${key}.png`,
+            `./assets/background/${key}.png`,
             import.meta.url
           ).href;
           promises.push(
@@ -375,7 +375,7 @@ export default {
 
         this.imagens.boss_sleeping = new Image();
         this.imagens.boss_sleeping.src = new URL(
-          "../assets/sprites/cartman2.png",
+          "./assets/sprites/cartman2.png",
           import.meta.url
         ).href;
         this.imagens.boss_sleeping.onload = () =>
@@ -384,7 +384,7 @@ export default {
           console.error("Erro ao carregar a imagem do boss_sleeping:", e);
 
         this.bgMusic = new Audio(
-          new URL("../assets/audio/music.mp3", import.meta.url).href
+          new URL("./assets/audio/music.mp3", import.meta.url).href
         );
         this.bgMusic.loop = true;
         this.bgMusic.volume = this.volumeMusica / 100;
