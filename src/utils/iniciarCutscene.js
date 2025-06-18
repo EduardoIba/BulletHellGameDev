@@ -19,7 +19,9 @@ export function iniciarCutsceneVideos() {
       ctx.iniciarContagemRegressiva(proximaFase);
     }
   }
+
   function iniciarCutsceneFase3(ctx) {
+ 
     if (ctx.cutsceneFase3JaVista) {
       ctx.iniciarContagemRegressiva(3);
       return;

@@ -131,7 +131,6 @@
 </template>
 
 <script>
-
 import { useState } from "../useState.js";
 import Menu from "./mainMenu.vue";
 import SideMenu from "./sideMenu.vue";
@@ -184,7 +183,6 @@ export default {
     Prologue,
     CutScenes,
   },
-  
   data() {
     return {
       fundos: [],
@@ -318,7 +316,6 @@ export default {
   },
 
   computed: {
-   
     showPhase5Background() {
       return (
         this.faseAtualDoJogo === 5 &&
@@ -331,7 +328,6 @@ export default {
     },
   },
 
-  // ... SEU MOUNTED E SETUP CONTINUAM OS MESMOS
   mounted() {
     const loadCollisionImages = () => {
       const promises = [];
@@ -425,7 +421,6 @@ export default {
   },
   
   methods: {
-    
     setupCollisionCanvas(fase) {
       const collisionImageName = this.faseColisaoMap[fase];
       const collisionImage = this.colisaoImages[collisionImageName];
@@ -444,6 +439,7 @@ export default {
     },
     iniciarOuContinuarJogo() {
       if (!this.historinhaJaVista) {
+        if (this.bgMusic) this.bgMusic.pause();
         this.setState("historinha");
         this.videoIndex = 0;
         this.$nextTick(() => {
@@ -462,7 +458,6 @@ export default {
     iniciarCutsceneFinal() {
       iniciarCutsceneFinal(this);
     },
-
     avancarVideoCutsceneFase() {
       avancarVideoCutscenefase(this);
     },
@@ -475,7 +470,6 @@ export default {
     avancarVideoHistorinha() {
       avancarVideoHistorinha(this);
     },
-
     pularCutsceneFase() {
       pularCutsceneFase(this);
     },
@@ -488,7 +482,6 @@ export default {
     pularVideoHistorinha() {
       pularVideoHistorinha(this);
     },
-
     iniciarContagemRegressiva(proximaFaseAlvo) {
       this.fundoAtual = this.fundos[proximaFaseAlvo - 1] || this.fundos[0];
       this.setState("countdown");
@@ -535,6 +528,9 @@ export default {
       }
       this.setupInimigos();
       this.setState("jogando");
+      if (this.bgMusic && this.bgMusic.paused) {
+        this.bgMusic.play().catch(e => console.warn("Erro ao retomar música:", e));
+      }
       this.iniciarTimer();
       this.iniciarLoop();
       if (this.nivel === 5) {
@@ -548,7 +544,6 @@ export default {
       this.velocidadeProjeteis =
         this.velocidadeProjeteisPorFase[faseParaIniciar];
       this.tempo = 0;
-
       if (this.faseAtualDoJogo === 5) {
         this.player.x = 220;
         this.player.y = this.height / 2;
@@ -556,10 +551,8 @@ export default {
         this.player.x = this.width / 2;
         this.player.y = this.height / 2;
       }
-
       this.setupCollisionCanvas(this.nivel);
       this.setupInimigos();
-
       if (this.bgMusic) {
         this.bgMusic.volume = this.volumeMusica / 100;
         if (this.bgMusic.paused) {
@@ -569,22 +562,18 @@ export default {
             .catch((e) => console.warn("Erro ao retomar música:", e));
         }
       }
-
       this.$nextTick(() => {
         this.setupControles();
         this.iniciarTimer();
         this.iniciarLoop();
-
         if (faseParaIniciar === 1 && !this.tempoTotalInterval) {
           this.iniciarTimerTotal();
         }
       });
-
       if (this.faseAtualDoJogo === 5) {
         this.iniciarLogicaFase5();
       }
     },
-
     renascer() {
       if (this.state !== "morte") return;
       setTimeout(() => {
@@ -621,6 +610,9 @@ export default {
         this.slowAtivo = false;
         this.setupInimigos();
         this.setupCollisionCanvas(this.faseAtualDoJogo);
+        if (this.bgMusic && this.bgMusic.paused) {
+            this.bgMusic.play().catch(e => console.warn("Erro ao retomar música:", e));
+        }
         this.iniciarTimer();
         this.iniciarLoop();
         if (this.faseAtualDoJogo === 5) {
@@ -637,7 +629,6 @@ export default {
       const cutsceneFase3JaVistaTemp = this.cutsceneFase3JaVista;
       const colisaoImagesTemp = this.colisaoImages;
       this.limparTimers();
-
       if (this.tempoTotalInterval) {
         clearInterval(this.tempoTotalInterval);
         this.tempoTotalInterval = null;
@@ -648,7 +639,6 @@ export default {
       this.fundos = fundosTemp;
       this.volumeMusica = volumeMusicaTemp;
       this.bgMusic = bgMusicTemp;
-      // Mantém o estado da cutscene da fase 3 se necessário
       this.cutsceneFase3JaVista = cutsceneFase3JaVistaTemp;
       this.colisaoImages = colisaoImagesTemp;
       this.nivel = 1;
@@ -657,9 +647,7 @@ export default {
       this.pontos = 0;
       this.pontosSalvos = 0;
       this.cutscenesFaseJaVistas = { 2: false, 3: false, 4: false, 5: false };
-      
-    
-      
+      this.cutsceneFase3JaVista = false;
       if (this.bgMusic) {
         this.bgMusic.volume = this.volumeMusica / 100;
         if (this.bgMusic.paused) {
@@ -750,39 +738,30 @@ export default {
         }
       }, 1000);
     },
-    
-    
     iniciarTimer() {
       clearInterval(this.tempoInterval);
       this.tempoInterval = setInterval(() => {
         if (this.state !== "jogando" || this.inGameMenuOpen) return;
         this.tempo++;
-    
-        // Lógica de transição de fase a cada 20 segundos
         if (this.tempo > 0 && this.tempo % 20 === 0 && !this.trocaFaseDelay) {
           this.trocaFaseDelay = true;
           setTimeout(() => {
             const proximaFase = this.nivel + 1;
-    
             if (this.nivel === 1) {
-              this.mostrarCutsceneFase(proximaFase); 
+              this.mostrarCutsceneFase(proximaFase);
             } else if (this.nivel === 2) {
-              this.iniciarCutsceneFase3(); 
+              this.iniciarCutsceneFase3();
             } else if (this.nivel === 3) {
-              this.mostrarCutsceneFase(proximaFase); 
+              this.mostrarCutsceneFase(proximaFase);
             } else if (this.nivel === 4) {
-              this.mostrarCutsceneFase(proximaFase); 
+              this.mostrarCutsceneFase(proximaFase);
             }
-            
             this.trocaFaseDelay = false;
           }, 3000);
         }
-        
         this.pontos += 10;
       }, 1000);
     },
-    // ####################################################################
-
     iniciarLogicaFase5() {
       if (this.fase5Intervalo) clearInterval(this.fase5Intervalo);
       this.fase5Timer = 0;
@@ -798,6 +777,7 @@ export default {
     vencerJogo() {
       this.limparTimers();
       this.tempoFinal = this.tempoTotalDeJogo;
+      if (this.bgMusic) this.bgMusic.pause();
       this.setState("fadeParaFinal");
       setTimeout(() => {
         this.setState("cutsceneFinal");
@@ -1078,8 +1058,6 @@ export default {
         }
       }
     },
-
-
     pularFase() {
       if (this.nivel >= 5) return;
       this.inGameMenuOpen = false;
@@ -1091,8 +1069,6 @@ export default {
         this.mostrarCutsceneFase(proximaFase);
       }
     },
-    
-
     voltarAoMenuPrincipal() {
       this.inGameMenuOpen = false;
       setTimeout(() => {
@@ -1115,7 +1091,6 @@ export default {
   },
 
   beforeUnmount() {
-    // SEU beforeUnmount() continua o mesmo
     if (this._handleKeyDown) {
       window.removeEventListener("keydown", this._handleKeyDown);
     }
